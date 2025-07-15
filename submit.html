@@ -6,15 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>提交作品 - 无限状态线上面试</title>
     <style>
-        div {
+        .submit-work {
             text-align: center;
             background-color: aqua;
+            margin: 50px auto;
+            max-width: 800px;
+            width: 100%;
+            border-radius:8px ;
+            border: 2px solid #ccc;
         }
     </style>
 </head>
 
 <body>
-    <div>
+    <div class="submit-work">
         <h2>完成挑战</h2>
         <form id="submit-form"
             style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center; max-width: 500px; margin: 0 auto;">
@@ -27,6 +32,7 @@
             <div style="grid-column: 1 / -1; text-align: center;">
                 <button type="button" id="submit-btn">提交作品</button>
             </div>
+            <br>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -63,8 +69,6 @@
                 if (error) throw error;
 
                 alert("提交成功！");
-                // 可根据需要跳转页面
-                // window.location.href = "success.html";
             } catch (error) {
                 console.error("详细错误:", error);
                 alert(`提交失败: ${error.message}`);

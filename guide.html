@@ -21,11 +21,15 @@
                 padding: 15px;
             }
         }
+        .next-button {
+            text-align: left;
+        }
     </style>
 </head>
 <body>
-    <div class="markdown-body" id="content"></div>
-    
+    <div class="markdown-body" id="content">
+        <button class="next-button" type="button" onclick="nextstep()">下一步</button>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         // 从GitHub获取Markdown内容
@@ -33,13 +37,19 @@
             .then(response => response.text())
             .then(text => {
                 // 将Markdown转换为HTML
-                document.getElementById('content').innerHTML = marked.parse(text);
+                document.getElementById('content').innerHTML = marked.parse(text) + 
+                    '<button type="button" onclick="nextstep()">下一步</button>';
             })
             .catch(error => {
                 console.error('Error loading markdown:', error);
                 document.getElementById('content').innerHTML = 
-                    '<h1>加载失败</h1><p>无法加载面试引导内容，请稍后再试。</p>';
+                    '<h1>加载失败</h1><p>无法加载面试引导内容，请稍后再试。</p>'+ 
+                    '<button type="button" onclick="nextstep()">下一步</button>';
             });
+
+            function nextstep() {
+                window.location.href = "accept.html";
+            }
     </script>
 </body>
 </html>

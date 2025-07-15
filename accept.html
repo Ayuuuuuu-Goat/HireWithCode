@@ -6,15 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>接受挑战 - 无限状态线上面试</title>
     <style>
-        div {
+        .accept-challenge {
             text-align: center;
             background-color: aqua;
+            margin: 50px auto;
+            max-width: 800px;
+            width: 100%;
+            border-radius:8px ;
+            border: 2px solid #ccc;
         }
     </style>
 </head>
 
 <body>
-    <div>
+    <div class="accept-challenge">
         <h2>接受挑战</h2>
         <form id="accept-form"
             style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center; max-width: 500px; margin: 0 auto;">
@@ -25,13 +30,12 @@
             <input type="text" id="email" placeholder="请输入邮箱">
 
             <div style="grid-column: 1 / -1; text-align: center;">
-                <!-- 移除onclick属性 -->
                 <button type="button" id="submit-btn">接受挑战</button>
             </div>
+            <br>
         </form>
     </div>
 
-    <!-- 确保脚本在body末尾 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // 初始化Supabase
