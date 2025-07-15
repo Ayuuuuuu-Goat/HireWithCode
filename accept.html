@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>接受挑战 - 无限状态线上面试</title>
+    <style>
+        div {
+            text-align: center;
+            background-color: aqua;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2>接受挑战</h2>
+        <form id="accept-form"
+            style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center; max-width: 500px; margin: 0 auto;">
+            <label style="text-align: right;">Github ID:</label>
+            <input type="text" id="githubid" placeholder="请输入Github ID">
+
+            <label style="text-align: right;">邮箱:</label>
+            <input type="text" id="email" placeholder="请输入邮箱">
+
+            <div style="grid-column: 1 / -1; text-align: center;">
+                <!-- 移除onclick属性 -->
+                <button type="button" id="submit-btn">接受挑战</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 确保脚本在body末尾 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 初始化Supabase
+        const supabaseUrl = 'https://xbuwzyfpvworvptjstku.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhidXd6eWZwdndvcnZwdGpzdGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1NjUwMzksImV4cCI6MjA2ODE0MTAzOX0.eJgBKO6V63gDhIgHxSc017quIayhg04l-19AHI-cIDg';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 使用事件监听器
+        document.getElementById('submit-btn').addEventListener('click', async function() {
+            const githubId = document.getElementById('githubid').value;
+            const email = document.getElementById('email').value;
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (!githubId || !email) {
+                alert("请填写 Github ID 和邮箱！");
+                return;
+            }
+
+            // 添加加载状态
+            submitBtn.disabled = true;
+            submitBtn.textContent = "提交中...";
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Acceptions')
+                    .insert([{ 
+                        github_id: githubId, 
+                        email: email,
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+
+                alert("提交成功！");
+                window.location.href = "submit.html";
+            } catch (error) {
+                console.error("详细错误:", error);
+                alert(`提交失败: ${error.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "接受挑战";
+            }
+        });
+    </script>
+</body>
+</html>

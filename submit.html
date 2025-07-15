@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提交作品 - 无限状态线上面试</title>
+    <style>
+        div {
+            text-align: center;
+            background-color: aqua;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2>完成挑战</h2>
+        <form id="submit-form"
+            style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center; max-width: 500px; margin: 0 auto;">
+            <label style="text-align: right;">Github仓库URL:</label>
+            <input type="text" id="github_url" placeholder="请输入github仓库url">
+
+            <label style="text-align: right;">Vercel在线体验地址:</label>
+            <input type="text" id="vercel_url" placeholder="请输入vercel在线体验地址">
+
+            <div style="grid-column: 1 / -1; text-align: center;">
+                <button type="button" id="submit-btn">提交作品</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 初始化Supabase
+        const supabaseUrl = 'https://xbuwzyfpvworvptjstku.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhidXd6eWZwdndvcnZwdGpzdGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1NjUwMzksImV4cCI6MjA2ODE0MTAzOX0.eJgBKO6V63gDhIgHxSc017quIayhg04l-19AHI-cIDg';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 使用事件监听器
+        document.getElementById('submit-btn').addEventListener('click', async function() {
+            const githubUrl = document.getElementById('github_url').value;
+            const vercelUrl = document.getElementById('vercel_url').value;
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (!githubUrl || !vercelUrl) {
+                alert("请填写 Github 仓库URL 和 Vercel在线体验地址！");
+                return;
+            }
+
+            // 添加加载状态
+            submitBtn.disabled = true;
+            submitBtn.textContent = "提交中...";
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Submissions')
+                    .insert([{ 
+                        github_url: githubUrl, 
+                        vercel_url: vercelUrl,
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+
+                alert("提交成功！");
+                // 可根据需要跳转页面
+                // window.location.href = "success.html";
+            } catch (error) {
+                console.error("详细错误:", error);
+                alert(`提交失败: ${error.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "提交作品";
+            }
+        });
+    </script>
+</body>
+
+</html>
